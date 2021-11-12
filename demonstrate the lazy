@@ -1,0 +1,67 @@
+
+import java.io.*;
+class Table1 {
+
+	private static Table1 table1;
+	private static String customerNameBooked;
+	private Table1(String customerName)
+	{
+		System.out.println("Table1 is now Booked for "
+						+ customerName);
+		customerNameBooked = customerName;
+	}
+	public static Table1
+	getTable1Instance(String customerName)
+	{
+		if (table1 == null) {
+			table1 = new Table1(customerName);
+		}
+		else
+			tableBooked(customerName);
+
+		return table1;
+	}
+	private static void tableBooked(String customerName)
+	{
+		System.out.println(
+			"Sorry " + customerName
+			+ " Table 1 is already Booked for "
+			+ customerNameBooked);
+	}
+}
+public class Restaurant {
+	public static void main(String args[])
+	{
+		Thread t1 = new Thread(new Runnable() {
+			public void run()
+			{
+				Table1 customer1
+					= Table1.getTable1Instance("ABC");
+			}
+		});
+		Thread t2 = new Thread(new Runnable() {
+			public void run()
+			{
+
+				Table1 customer2
+					= Table1.getTable1Instance("XYZ");
+			}
+		});
+		Thread t3 = new Thread(new Runnable() {
+			public void run()
+			{
+
+				Table1 customer3
+					= Table1.getTable1Instance("PQR");
+			}
+		});
+		t1.start();
+		t2.start();
+		try {
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException e) {
+		}
+		t3.start();
+	}
+}
